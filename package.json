@@ -4,16 +4,20 @@
   "description": "Script para generar .srt de la página oficial.",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "node gulpfile.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alfonso Andrés López Molina",
   "license": "ISC",
   "devDependencies": {
-      "gulp": "^3.9.1",
-      "cheerio": "^0.20.0",
-      "request-promise": "^2.0.1",
-      "html2plaintext": "^1.0.1",
-      "gulp-util": "^3.0.7",
-      "request": "^2.69.0"
+    "@types/cheerio": "^0.17.31",
+    "@types/node": "^6.0.48",
+    "cheerio": "^0.20.0",
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.7",
+    "html2plaintext": "^1.0.1",
+    "request": "^2.69.0",
+    "typescript": "^2.0.10"
   }
 }
