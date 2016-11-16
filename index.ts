@@ -1,12 +1,10 @@
+import { CliArguments } from './cli-arguments';
+import { Arguments, Commands } from './arguments';
 var gulp = require('gulp');
 var h2p = require('html2plaintext');
 var gutil = require('gulp-util');
 var request = require('request');
 var cheerio = require('cheerio') as CheerioAPI;
-
-var lang = 6; // { 5: 'Español (España)', 6: 'Español (Latinoamérica)' }
-
-var id = 52445;
 
 var options = {
     headers: {
@@ -16,7 +14,9 @@ var options = {
     url: ''
 };
 
-generar(id, lang);
+var cli = new CliArguments;
+
+generar(cli[Commands.Id], cli[Commands.Lang]);
 
 function getUri(id, lang, start) { return `http://www.tusubtitulo.com/translate_ajaxlist.php?id=${id}&fversion=0&langto=${lang}&langfrom=1&start=${start}` };
 // return 'http://www.tusubtitulo.com/ajax_list.php?id=' + id + '&fversion=0&lang=' + lang + '&slang=1&updated=true&start=' + start + '&search=&user=0'
@@ -27,7 +27,7 @@ function generar(id, lang) {
 
 function string_src(filename, string) {
     var src = require('stream').Readable({ objectMode: true })
-    src._read = function() {
+    src._read = function () {
         this.push(new gutil.File({ cwd: "", base: "", path: filename, contents: new Buffer(string) }));
         this.push(null);
     }
@@ -37,7 +37,7 @@ function string_src(filename, string) {
 function _generate(id, lang, start, file) {
     options.url = getUri(id, lang, start);
     //console.log(options.url);
-    request(options, function(error, response, body) {
+    request(options, function (error, response, body) {
         if (error || response.statusCode != 200) {
             // API call failed...
             console.log(error);
@@ -45,9 +45,9 @@ function _generate(id, lang, start, file) {
         }
         //console.log(body);
         let $ = cheerio.load(body);
-        var array = [];
+        var array: {}[] = [];
         console.log("Página " + (start / 20 + 1));
-        $("#tabla tr.lockedText, #tabla tr.quotedText, #tabla tr.originalText").each(function(index, value) {
+        $("#tabla tr.lockedText, #tabla tr.quotedText, #tabla tr.originalText").each(function (index, value) {
             var values = $(value).find('td');
             var o = {
                 Nro: $(values.get(0)).find('div').html(),
