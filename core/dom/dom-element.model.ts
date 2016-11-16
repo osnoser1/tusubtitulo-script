@@ -1,0 +1,5 @@
+/**
+ * DomElement
+ */
+export interface DomElement {
+}

@@ -1,12 +1,12 @@
-import { NodeHttpService } from './node/node-http.service';
+import { CheerioDomService } from './node/cheerio-dom/cheerio-dom.service';
+import { DomService } from './core/dom';
+import { NodeHttpService, NodeFileService } from './node';
 import { HttpService } from './core/http/http.service';
-import { NodeFileService } from './node/node-file.service';
 import { FileService } from './core/file.service';
 import { CliArguments } from './cli-arguments';
 import { Arguments, Commands } from './arguments';
 
 var h2p = require('html2plaintext');
-var cheerio = require('cheerio') as CheerioAPI;
 
 interface Linea { Nro: string, Tiempos: string, Texto: string }
 
@@ -21,6 +21,7 @@ var options = {
 var cli = new CliArguments;
 var fileService: FileService = new NodeFileService;
 var http: HttpService = new NodeHttpService;
+var dom: DomService = new CheerioDomService;
 
 generar(cli[Commands.Id], cli[Commands.Lang]);
 
@@ -49,7 +50,7 @@ async function _generate(id, lang, start, file) {
 }
 
 function getLineas(body: string): Linea[] {
-    let $ = cheerio.load(body);
+    let $ = dom.load(body);
     return <any[]>$('#tabla tr.lockedText, #tabla tr.quotedText, #tabla tr.originalText').map((index, value) => {
         const values = $(value).find('td');
         return {
