@@ -1,9 +1,11 @@
+import { NodeHttpService } from './node/node-http.service';
+import { HttpService } from './core/http/http.service';
+import { NodeFileService } from './node/node-file.service';
+import { FileService } from './core/file.service';
 import { CliArguments } from './cli-arguments';
 import { Arguments, Commands } from './arguments';
-var gulp = require('gulp');
+
 var h2p = require('html2plaintext');
-var gutil = require('gulp-util');
-var request = require('request');
 var cheerio = require('cheerio') as CheerioAPI;
 
 interface Linea { Nro: string, Tiempos: string, Texto: string }
@@ -17,6 +19,8 @@ var options = {
 };
 
 var cli = new CliArguments;
+var fileService: FileService = new NodeFileService;
+var http: HttpService = new NodeHttpService;
 
 generar(cli[Commands.Id], cli[Commands.Lang]);
 
@@ -26,28 +30,19 @@ function generar(id, lang) {
     _generate(id, lang, 0, "");
 }
 
-function string_src(filename, string) {
-    var src = require('stream').Readable({ objectMode: true })
-    src._read = function () {
-        this.push(new gutil.File({ cwd: "", base: "", path: filename, contents: new Buffer(string) }));
-        this.push(null);
-    }
-    return src;
-}
-
 async function _generate(id, lang, start, file) {
     options.url = getUri(id, lang, start);
     try {
-        let body = await httpRequest<string>(options);
+        let body = await http.request<string>(options);
         console.log(`Página ${start / 20 + 1}`);
         var array: Linea[] = getLineas(body);
         if (!array.length) {
-            save(file, `${id}.srt`, 'build/');
+            fileService.saveText(file, `${id}.srt`, 'build/');
         } else {
-            file += array.map(o => `${o.Nro}\n${o.Tiempos}\n${o.Texto}\n\n`).join('');
+            file += array.reduce((prev, cur) => `${prev}${cur.Nro}\n${cur.Tiempos}\n${cur.Texto}\n\n`, '');
             _generate(id, lang, start + 20, file);
         }
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         _generate(id, lang, start, file);
     }
@@ -63,17 +58,4 @@ function getLineas(body: string): Linea[] {
             Texto: h2p($(values.get($(value).hasClass('originalText') ? 5 : 6)).html())
         };
     }).get();
-}
-
-function save(file: any, name: string, dest: string): void {
-    string_src(name, file).pipe(gulp.dest(dest));
-}
-
-function httpRequest<T>(options: any): Promise<T> {
-    return new Promise((resolve, reject) => 
-        request(options, (error, response, body) => {
-            if (error || response.statusCode != 200) return reject(error);
-            resolve(body);
-        })
-    );
 }
