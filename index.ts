@@ -6,6 +6,8 @@ var gutil = require('gulp-util');
 var request = require('request');
 var cheerio = require('cheerio') as CheerioAPI;
 
+interface Linea { Nro: string, Tiempos: string, Texto: string }
+
 var options = {
     headers: {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -18,8 +20,7 @@ var cli = new CliArguments;
 
 generar(cli[Commands.Id], cli[Commands.Lang]);
 
-function getUri(id, lang, start) { return `http://www.tusubtitulo.com/translate_ajaxlist.php?id=${id}&fversion=0&langto=${lang}&langfrom=1&start=${start}` };
-// return 'http://www.tusubtitulo.com/ajax_list.php?id=' + id + '&fversion=0&lang=' + lang + '&slang=1&updated=true&start=' + start + '&search=&user=0'
+function getUri(id, lang, start) { return `http://www.tusubtitulo.com/translate_ajaxlist.php?id=${id}&fversion=0&langto=${lang}&langfrom=1&start=${start}` }
 
 function generar(id, lang) {
     _generate(id, lang, 0, "");
@@ -34,34 +35,45 @@ function string_src(filename, string) {
     return src;
 }
 
-function _generate(id, lang, start, file) {
+async function _generate(id, lang, start, file) {
     options.url = getUri(id, lang, start);
-    //console.log(options.url);
-    request(options, function (error, response, body) {
-        if (error || response.statusCode != 200) {
-            // API call failed...
-            console.log(error);
-            return _generate(id, lang, start, file);
-        }
-        //console.log(body);
-        let $ = cheerio.load(body);
-        var array: {}[] = [];
-        console.log("Página " + (start / 20 + 1));
-        $("#tabla tr.lockedText, #tabla tr.quotedText, #tabla tr.originalText").each(function (index, value) {
-            var values = $(value).find('td');
-            var o = {
-                Nro: $(values.get(0)).find('div').html(),
-                Tiempos: h2p($(values.get(4)).html()),
-                Texto: h2p($(values.get($(value).hasClass('originalText') ? 5 : 6)).html())
-            };
-            file += o.Nro + "\n" + o.Tiempos + "\n" + o.Texto + "\n\n";
-            array.push(o);
-            // console.log(o);  
-        });
+    try {
+        let body = await httpRequest<string>(options);
+        console.log(`Página ${start / 20 + 1}`);
+        var array: Linea[] = getLineas(body);
         if (!array.length) {
-            string_src(id + ".srt", file).pipe(gulp.dest('build/'));
+            save(file, `${id}.srt`, 'build/');
         } else {
+            file += array.map(o => `${o.Nro}\n${o.Tiempos}\n${o.Texto}\n\n`).join('');
             _generate(id, lang, start + 20, file);
         }
-    });
+    } catch(error) {
+        console.log(error);
+        _generate(id, lang, start, file);
+    }
+}
+
+function getLineas(body: string): Linea[] {
+    let $ = cheerio.load(body);
+    return <any[]>$('#tabla tr.lockedText, #tabla tr.quotedText, #tabla tr.originalText').map((index, value) => {
+        const values = $(value).find('td');
+        return {
+            Nro: $(values.get(0)).find('div').html(),
+            Tiempos: h2p($(values.get(4)).html()),
+            Texto: h2p($(values.get($(value).hasClass('originalText') ? 5 : 6)).html())
+        };
+    }).get();
+}
+
+function save(file: any, name: string, dest: string): void {
+    string_src(name, file).pipe(gulp.dest(dest));
+}
+
+function httpRequest<T>(options: any): Promise<T> {
+    return new Promise((resolve, reject) => 
+        request(options, (error, response, body) => {
+            if (error || response.statusCode != 200) return reject(error);
+            resolve(body);
+        })
+    );
 }
