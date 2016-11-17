@@ -23,29 +23,28 @@ var fileService: FileService = new NodeFileService;
 var http: HttpService = new NodeHttpService;
 var dom: DomService = new CheerioDomService;
 
-generar(cli[Commands.Id], cli[Commands.Lang]);
+generate(cli[Commands.Id], cli[Commands.Lang]);
 
 function getUri(id, lang, start) { return `http://www.tusubtitulo.com/translate_ajaxlist.php?id=${id}&fversion=0&langto=${lang}&langfrom=1&start=${start}` }
 
-function generar(id, lang) {
-    _generate(id, lang, 0, "");
-}
-
-async function _generate(id, lang, start, file) {
-    options.url = getUri(id, lang, start);
-    try {
-        let body = await http.request<string>(options);
-        console.log(`Página ${start / 20 + 1}`);
-        var array: Linea[] = getLineas(body);
-        if (!array.length) {
-            fileService.saveText(file, `${id}.srt`, 'build/');
-        } else {
-            file += array.reduce((prev, cur) => `${prev}${cur.Nro}\n${cur.Tiempos}\n${cur.Texto}\n\n`, '');
-            _generate(id, lang, start + 20, file);
+async function generate(id, lang) {
+    let start = 0, file = '';
+    while (true) {
+        options.url = getUri(id, lang, start);
+        try {
+            const body = await http.request<string>(options);
+            console.log(`Página ${start / 20 + 1}`);
+            const array = getLineas(body);
+            if (!array.length) {
+                fileService.saveText(file, `${id}.srt`, 'build/');
+                break;
+            } else {
+                file += array.reduce((prev, cur) => `${prev}${cur.Nro}\n${cur.Tiempos}\n${cur.Texto}\n\n`, '');
+                start += 20;
+            }
+        } catch (error) {
+            console.log(error);
         }
-    } catch (error) {
-        console.log(error);
-        _generate(id, lang, start, file);
     }
 }
 
