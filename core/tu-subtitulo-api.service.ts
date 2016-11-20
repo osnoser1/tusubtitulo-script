@@ -1,9 +1,8 @@
+import { StringUtils } from './utils';
 import { DomService } from './dom';
 import { Linea } from './linea.model';
 import { FileService } from './file.service';
 import { HttpService } from './http/http.service';
-
-var h2p = require('html2plaintext');
 
 /**
  * TuSubtituloApiService
@@ -18,7 +17,7 @@ export class TuSubtituloApiService {
         url: ''
     };
 
-    constructor(private dom: DomService, private http: HttpService) { }
+    constructor(private dom: DomService, private http: HttpService, private stringUtils: StringUtils) { }
 
     getSubtitulo(id: number, lang: number): Promise<Linea[]> {
         return new Promise(async (resolve, reject) => {
@@ -48,8 +47,8 @@ export class TuSubtituloApiService {
             const values = $(value).find('td');
             return {
                 Nro: $(values.get(0)).find('div').html(),
-                Tiempos: h2p($(values.get(4)).html()),
-                Texto: h2p($(values.get($(value).hasClass('originalText') ? 5 : 6)).html())
+                Tiempos: this.stringUtils.htmlToPlainText($(values.get(4)).html()),
+                Texto: this.stringUtils.htmlToPlainText($(values.get($(value).hasClass('originalText') ? 5 : 6)).html())
             };
         }).get();
     }

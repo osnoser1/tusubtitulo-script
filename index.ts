@@ -1,6 +1,6 @@
 import { TuSubtituloApiService } from './core/tu-subtitulo-api.service';
 import { CheerioDomService } from './node/cheerio-dom/cheerio-dom.service';
-import { NodeHttpService, NodeFileService } from './node';
+import { NodeHttpService, NodeFileService, NodeStringUtils } from './node';
 import { FileService } from './core/file.service';
 import { CliArguments } from './cli-arguments';
 import { Commands } from './arguments';
@@ -8,7 +8,7 @@ import { Commands } from './arguments';
 var cli = new CliArguments;
 var fileService: FileService = new NodeFileService;
 
-var api = new TuSubtituloApiService(new CheerioDomService, new NodeHttpService);
+var api = new TuSubtituloApiService(new CheerioDomService, new NodeHttpService, new NodeStringUtils);
 
 (async () => {
     const id = cli[Commands.Id];
