@@ -12,7 +12,7 @@ export class TuSubtituloApiService {
     private options = {
         headers: {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Cookie': 'PHPSESSID=87dbf96cd689588ebbf72a65dbe0f654; subtitulosu=139062; subtitulosp=43e5c74b22dd9989e623c38c33873828a0a6e839'
+            'Cookie': 'PHPSESSID=?; subtitulosu=?; subtitulosp=?'
         },
         url: ''
     };
