@@ -2,17 +2,19 @@
     "name": "tu-subtitulo-script",
     "version": "1.0.0",
     "description": "Script para generar archivos .srt de la página oficial https://tusubtitulo.com.",
-    "main": "dist/cli.js",
+    "main": "./dist/cli.js",
+    "types": "./dist/cli.d.ts",
     "bin": {
-        "tu-subtitulo": "dist/cli.js"
+        "tu-subtitulo": "./dist/cli.js"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/osnoser1/tusubtitulo-script.git"
     },
     "scripts": {
-        "build": "rimraf dist && tsc",
-        "start": "node dist/cli.js",
+        "build": "rimraf ./dist && tsc",
+        "prepublishOnly": "npm run build",
+        "start": "npm run build && node dist/cli.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Alfonso Andrés López Molina <osnoser_12@hotmail.com>",
