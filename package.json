@@ -1,23 +1,27 @@
 {
-    "name": "tusubtitulo-script",
+    "name": "tu-subtitulo-script",
     "version": "1.0.0",
     "description": "Script para generar .srt de la página oficial.",
     "main": "index.js",
     "scripts": {
         "build": "tsc",
-        "start": "node build/out-tsc/index.js",
+        "start": "node dist/cli.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Alfonso Andrés López Molina",
-    "license": "ISC",
+    "license": "MIT",
+    "dependencies": {
+        "find-up": "^2.1.0",
+        "form-data": "^2.3.1",
+        "moment": "^2.19.1",
+        "request": "^2.83.0",
+        "yargs": "^10.0.3"
+    },
     "devDependencies": {
-        "@types/cheerio": "^0.17.31",
-        "@types/node": "^6.0.48",
-        "cheerio": "^0.20.0",
-        "gulp": "^3.9.1",
-        "gulp-util": "^3.0.7",
-        "html2plaintext": "^1.0.1",
-        "request": "^2.69.0",
-        "typescript": "^2.0.10"
+        "@types/moment": "^2.13.0",
+        "@types/node": "^8.0.51",
+        "@types/request": "^2.0.8",
+        "@types/yargs": "^8.0.2",
+        "typescript": "~2.6.1"
     }
 }
