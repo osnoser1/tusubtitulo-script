@@ -6,6 +6,10 @@
     "bin": {
         "tu-subtitulo": "dist/cli.js"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/osnoser1/tusubtitulo-script.git"
+    },
     "scripts": {
         "build": "tsc",
         "start": "node dist/cli.js",
