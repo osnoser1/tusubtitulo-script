@@ -11,13 +11,7 @@
     "author": "Alfonso Andrés López Molina",
     "license": "ISC",
     "devDependencies": {
-        "@types/cheerio": "^0.17.31",
         "@types/node": "^6.0.48",
-        "cheerio": "^0.20.0",
-        "gulp": "^3.9.1",
-        "gulp-util": "^3.0.7",
-        "html2plaintext": "^1.0.1",
-        "request": "^2.69.0",
         "typescript": "^2.0.10"
     }
 }
