@@ -12,5 +12,11 @@ export const builder = {
         describe: 'Subtitle language',
         demandOption: true,
     },
+    mixed: {
+        alias: 'm',
+        describe: 'Add sequences in english if it is not available in the selected language',
+        boolean: true,
+        default: true,
+    },
 };
 export const handler = () => console.log('download command executed!');
