@@ -1,3 +1,5 @@
+import { downloadSubtitle } from "../core/download-subtitle";
+
 export const command = 'download [options]';
 export const aliases = 'd';
 export const describe = 'Download the subtitle from page';
@@ -12,5 +14,11 @@ export const builder = {
         describe: 'Subtitle language',
         demandOption: true,
     },
+    mixed: {
+        alias: 'm',
+        describe: 'Add sequences in english if it is not available in the selected language',
+        boolean: true,
+        default: true,
+    },
 };
-export const handler = () => console.log('download command executed!');
+export const handler = (argv) => downloadSubtitle(argv)
