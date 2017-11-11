@@ -2,7 +2,10 @@
     "name": "tu-subtitulo-script",
     "version": "1.0.0",
     "description": "Script para generar .srt de la página oficial.",
-    "main": "index.js",
+    "main": "dist/cli.js",
+    "bin": {
+        "tu-subtitulo": "dist/cli.js"
+    },
     "scripts": {
         "build": "tsc",
         "start": "node dist/cli.js",
@@ -10,6 +13,7 @@
     },
     "author": "Alfonso Andrés López Molina",
     "license": "MIT",
+    "preferGlobal": true,
     "dependencies": {
         "find-up": "^2.1.0",
         "form-data": "^2.3.1",
