@@ -11,7 +11,7 @@
         "url": "git+https://github.com/osnoser1/tusubtitulo-script.git"
     },
     "scripts": {
-        "build": "tsc",
+        "build": "rimraf dist && tsc",
         "start": "node dist/cli.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -30,6 +30,7 @@
         "@types/node": "^8.0.51",
         "@types/request": "^2.0.8",
         "@types/yargs": "^8.0.2",
+        "rimraf": "^2.6.2",
         "typescript": "~2.6.1"
     }
 }
