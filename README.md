@@ -2,19 +2,41 @@
 Interfaz de linea de comandos (CLI) para descargar subtítulos de tusubtitulo.com.
 
 # Prerrequisitos
-El proyecto tiene dependencias que requieren Node 6 o superior, junto con NPM 3 o superior.
+El proyecto tiene dependencias que requieren Node 8 o superior, junto con npm 5 o superior.
 
-# Construcción
-Ubicarse en la raiz del proyecto y ejecutar:
+# Instalación
+
 ```bash
-   npm install
+   npm install -g tu-subtitulo
 ```
 
 # Uso
-1. Loguearse en [tusubtitulo.com](https://www.tusubtitulo.com/login.php), y copiar Cookie de sesión en la linea 15 de `tu-subtitulo-api.service.ts` (única vez mientras tenga la sesión iniciada).
+1. Loguearse en [tusubtitulo.com](https://www.tusubtitulo.com/login.php), y copiar Cookie de sesión.
 2. Ejecutar:
 ```bash
-   npm run start -- --id 11111 --lang 5
+   tu-subtitulo config set cookie [value]
+   # [value]: Cookie de sesión copiado.
+   tu-subtitulo download -i 11111 -l 5
    # 5: Español (España).
    # 6: Español (Latinoamérica).
 ```
+
+Por defecto se guarda en la carpeta de descargas del usuario, si desea cambiar la ubicación ejecutar:
+
+```bash
+tu-subtitulo config set downloadPath [path]
+# [path]: puede ser una ruta del estilo 'D:\Users\My User\Downloads'
+```
+# Documentación
+
+La documentación se puede acceder a través de:
+
+```bash
+tu-subtitulo --help
+```
+
+# License
+
+Este software usa licencia [MIT](./LICENCE).
+
+Copyright 2017 Linus Norton.
