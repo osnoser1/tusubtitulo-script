@@ -1,5 +1,5 @@
 {
-    "name": "tusubtitulo-script",
+    "name": "tu-subtitulo-script",
     "version": "1.0.0",
     "description": "Script para generar .srt de la página oficial.",
     "main": "index.js",
