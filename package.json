@@ -1,7 +1,7 @@
 {
     "name": "tu-subtitulo-script",
     "version": "1.0.0",
-    "description": "Script para generar .srt de la página oficial.",
+    "description": "Script para generar archivos .srt de la página oficial https://tusubtitulo.com.",
     "main": "dist/cli.js",
     "bin": {
         "tu-subtitulo": "dist/cli.js"
@@ -15,7 +15,7 @@
         "start": "node dist/cli.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "Alfonso Andrés López Molina",
+    "author": "Alfonso Andrés López Molina <osnoser_12@hotmail.com>",
     "license": "MIT",
     "preferGlobal": true,
     "dependencies": {
