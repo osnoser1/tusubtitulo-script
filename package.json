@@ -10,8 +10,13 @@
     },
     "author": "Alfonso Andrés López Molina",
     "license": "ISC",
+    "dependencies": {
+        "find-up": "^2.1.0",
+        "yargs": "^10.0.3"
+    },
     "devDependencies": {
-        "@types/node": "^6.0.48",
-        "typescript": "^2.0.10"
+        "@types/node": "^8.0.51",
+        "@types/yargs": "^8.0.2",
+        "typescript": "^2.6.1"
     }
 }
