@@ -7,7 +7,7 @@ El proyecto tiene dependencias que requieren Node 8 o superior, junto con npm 5 
 # Instalación
 
 ```bash
-   npm install -g tu-subtitulo
+   npm install -g tu-subtitulo-script
 ```
 
 # Uso
