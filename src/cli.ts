@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import * as findUp from 'find-up';
 import * as yargs from 'yargs';
 
