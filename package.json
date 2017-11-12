@@ -1,6 +1,6 @@
 {
     "name": "tu-subtitulo-script",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Script para generar archivos .srt de la página oficial https://tusubtitulo.com.",
     "main": "./dist/cli.js",
     "types": "./dist/cli.d.ts",
